@@ -1,6 +1,9 @@
 const express = require('express');
 const transaction = express.Router();
 const transactionData = require('../models/info');
+const {checkForCorrectFormat} = require('../validations/transactionValidations');
+// const { nanoid } = require('nanoid');
+
 
 
 // INDEX
@@ -12,7 +15,7 @@ transaction.get('/', (req, res) => {
 transaction.get('/:id', (req, res) => {
     const { id } = req.params;
     if(id > transactionData.length-1 ){
-        res.status(404).json({error: "Page Not Found"});
+        res.status(404).json({error: "Transaction Not Found"});
         // res.redirect('/transaction');
     }else{
         res.json(transactionData[id]);
@@ -21,7 +24,7 @@ transaction.get('/:id', (req, res) => {
 
 
 // CREATE
-transaction.post('/', (req, res) => {
+transaction.post('/', checkForCorrectFormat, (req, res) => {
     transactionData.push(req.body);
     res.json(transactionData);
     // res.json(transactionData[transactionData.length-1]);
@@ -39,8 +42,8 @@ transaction.delete('/:id', (req, res) => {
     const { id } = req.params;
     if (transactionData[id]) {
         transactionData.splice(id, 1);
-        // res.json({ message: "Successfully deleted a transaction" });
-        res.json(transactionData);
+        res.json({ message: "Successfully deleted a transaction" });
+        // res.json(transactionData);
     } else {
         res.json({ error: "Transaction Not Found" });
     }
