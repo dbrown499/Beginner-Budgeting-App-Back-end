@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const Index = () => {
     const [total, setTotal] = useState([])
@@ -17,17 +18,17 @@ const Index = () => {
 
     return (
         <>
+        <h1>Index</h1>
             <div>Bank Account Total:{totalAmount}</div>
             <div>
-                {total.map((trans) => {
+                {total.map((trans, ind) => {
                     return (
                         <div key={trans.id}>
-                            <div>{trans.id}</div>
-                            <div>{trans.item_name}</div>
-                            <div>{trans.amount}</div>
                             <div>{trans.date}</div>
-                            <div>{trans.from}</div>
-                            <div>{trans.category}</div>
+                            <Link to={`/transaction/${ind}`}>
+                                <div>{trans.item_name}</div>
+                            </Link>
+                            <div>{trans.amount}</div>
                         </div>
                     )
                 })}
